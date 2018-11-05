@@ -1,7 +1,6 @@
 # Homework 8 CS651
-
-We will try putting our homework solutions in this `README.md` file
-so that your Professor can find it. This will also make you appreciate the ease of using Markdown for code snippets and including image files like screen shots.
+**Justin Yeap**
+**NetID: mq5839**
 
 ## Question 1
 
