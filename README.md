@@ -15,3 +15,25 @@ Inside the webpack-dev-server folder there is a package.json file that says one 
 ## Question 2
 ## (b)
 ![Image](2b1.png) ![Image](2b2.png)
+
+## Question 3
+## (a)
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import qAndAs from './QandA.json';
+
+const element = <div>
+                  <h1>There are {qAndAs.length} questions</h1>
+                  <div></div>
+                  <h1>The questions in JSON form</h1>
+                  <div></div>
+                  <p>{JSON.stringify(qAndAs)}</p>
+                </div>;
+
+ReactDOM.render(element, document.getElementById('root'));
+```
+
+## (b)
+![Image](3b.png)
