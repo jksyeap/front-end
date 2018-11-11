@@ -5,9 +5,10 @@ import qAndAs from './QandA.json';
 
 function App(props) {
   let questions = props.qAndAs;
-  let currentQuestion = 0;
+  let currentQuestionIndex = 0;
+  let currentQuestion = questions[currentQuestionIndex];
   let showAnswer = false;
-  let panel = <QandAPanel showAnswer={showAnswer} currentQuestion={currentQuestion} questions={questions}/>;
+  let panel = <QandAPanel showAnswer={showAnswer} question={currentQuestion.question} answer={currentQuestion.answer}/>;
   return <div>
           {panel}
          </div>;
@@ -18,15 +19,15 @@ function QandAPanel(props) {
     return <div>
             <h1>Test Yourself</h1>
             <h2>Question</h2>
-            <p>{props.questions[props.currentQuestion].question}</p>
+            <p>{props.question}</p>
            </div>;
   }
   else {
     return <div>
             <h1>Test Yourself</h1>
             <h2>Question</h2>
-            <p>{props.questions[props.currentQuestion].question}</p>
-            <p>{props.questions[props.currentQuestion].answer}</p>
+            <p>{props.question}</p>
+            <p>{props.answer}</p>
            </div>;
   }
 }
