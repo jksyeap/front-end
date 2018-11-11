@@ -37,3 +37,38 @@ ReactDOM.render(element, document.getElementById('root'));
 
 ## (b)
 ![Image](3b.png)
+
+## Question 4
+## (a)
+```javascript
+function App(props) {
+  let questions = props.qAndAs;
+  let currentQuestion = 0;
+  let showAnswer = false;
+  let panel = <QandAPanel showAnswer={showAnswer} currentQuestion={currentQuestion} questions={questions}/>;
+  return <div>
+          {panel}
+         </div>;
+}
+```
+
+## (b)
+```javascript
+function QandAPanel(props) {
+  if(props.showAnswer === false) {
+    return <div>
+            <h1>Test Yourself</h1>
+            <h2>Question</h2>
+            <p>{props.questions[props.currentQuestion].question}</p>
+           </div>;
+  }
+  else {
+    return <div>
+            <h1>Test Yourself</h1>
+            <h2>Question</h2>
+            <p>{props.questions[props.currentQuestion].question}</p>
+            <p>{props.questions[props.currentQuestion].answer}</p>
+           </div>;
+  }
+}
+```
