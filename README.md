@@ -124,3 +124,34 @@ class ControlPanel extends React.Component {
   }
 }
 ```
+
+## Question 6
+## (a)
+```jsx
+class CreateQAPanel extends React.Component {
+  render() {
+    return <div>
+             <form onSubmit={this.props.addQ}>
+               <h1>Create Q&A</h1>
+               <input type="submit" value="Add Q & A" />
+               <label for="newQ">Question:</label>
+               <textarea value={this.props.newQ} name="newQ" onChange={this.props.handleChange}/>
+               <label for="newA">Answer:</label>
+               <textarea value={this.props.newA} name="newA" onChange={this.props.handleChange}/>
+              </form>
+           </div>;
+  }
+}
+```
+
+## (b)
+Add Question Method:
+```jsx
+addQuestion(event) {
+  this.setState({[event.target.name]:event.target.value});
+  let tempQs = this.state.questions;
+  tempQs.push({question:this.state.newQ, answer:this.state.newA});
+  this.setState({questions:tempQs, newQ:'', newA:''});
+  event.preventDefault();
+}
+```

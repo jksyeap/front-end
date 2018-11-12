@@ -1,3 +1,7 @@
 body {
   border:15px solid Chartreuse
 }
+
+form input,label,textarea {
+    display:block;
+}

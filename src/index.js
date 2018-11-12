@@ -8,10 +8,16 @@ class App extends React.Component {
     super(props);
     this.state = {questions:qAndAs,
                   currentQuestionIndex:0,
-                  showAnswer:false};
+                  showAnswer:false,
+                  newQ:'',
+                  newA:'',
+                  showCreator:false};
     this.nextQuestion = this.nextQuestion.bind(this);
     this.prevQuestion = this.prevQuestion.bind(this);
     this.toggleAnswer = this.toggleAnswer.bind(this);
+    this.toggleCreator = this.toggleCreator.bind(this);
+    this.addQuestion = this.addQuestion.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   
   render() {
@@ -25,12 +31,19 @@ class App extends React.Component {
                                      toggleAnswer={this.toggleAnswer}
                                      currentQuestionIndex={this.state.currentQuestionIndex}
                                      showAnswer={this.state.showAnswer}
+                                     showCreator={this.state.showCreator}
+                                     toggleCreator={this.toggleCreator}
                                      howManyQs={this.state.questions.length}/>;
-                                     
-    return <div>
-            {controlPanel}
-            {panel}
-           </div>;
+   
+   let creator = <CreateQAPanel addQ={this.addQuestion}
+                                handleChange={this.handleChange}
+                                newQ={this.state.newQ}
+                                newA={this.state.newA}/>;
+   
+   if(this.state.showCreator === false)
+     {return <div>{controlPanel}{panel}</div>;} 
+   else
+     {return <div>{controlPanel}{panel}{creator}</div>;}
   }
   
   nextQuestion() {
@@ -47,6 +60,23 @@ class App extends React.Component {
   toggleAnswer() {
     let show = !this.state.showAnswer;
     this.setState({showAnswer:show});
+  }
+  
+  toggleCreator() {
+    let show = !this.state.showCreator;
+    this.setState({showCreator:show});
+  }
+  
+  addQuestion(event) {
+    this.setState({[event.target.name]:event.target.value});
+    let tempQs = this.state.questions;
+    tempQs.push({question:this.state.newQ, answer:this.state.newA});
+    this.setState({questions:tempQs, newQ:'', newA:''});
+    event.preventDefault();
+  }
+  
+  handleChange(event) {
+    this.setState({[event.target.name]:event.target.value});
   }
 }
 
@@ -76,7 +106,23 @@ class ControlPanel extends React.Component {
             <button onClick={this.props.nextQuestion}>Forward</button>
             <button onClick={this.props.prevQuestion}>Back</button>
             <button onClick={this.props.toggleAnswer}>{this.props.showAnswer ? 'Hide Answer' : 'Show Answer'}</button>
+            <button onClick={this.props.toggleCreator}>{this.props.showCreator ? 'Hide Question Creator' : 'Show Question Creator'}</button>
             <p>Question {this.props.currentQuestionIndex + 1} of {this.props.howManyQs}</p>
+           </div>;
+  }
+}
+
+class CreateQAPanel extends React.Component {
+  render() {
+    return <div>
+             <form onSubmit={this.props.addQ}>
+               <h1>Create Q&A</h1>
+               <input type="submit" value="Add Q & A" />
+               <label for="newQ">Question:</label>
+               <textarea value={this.props.newQ} name="newQ" onChange={this.props.handleChange}/>
+               <label for="newA">Answer:</label>
+               <textarea value={this.props.newA} name="newA" onChange={this.props.handleChange}/>
+              </form>
            </div>;
   }
 }
