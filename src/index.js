@@ -18,6 +18,7 @@ class App extends React.Component {
     this.toggleCreator = this.toggleCreator.bind(this);
     this.addQuestion = this.addQuestion.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.deleteQuestion = this.deleteQuestion.bind(this);
   }
   
   render() {
@@ -33,6 +34,7 @@ class App extends React.Component {
                                      showAnswer={this.state.showAnswer}
                                      showCreator={this.state.showCreator}
                                      toggleCreator={this.toggleCreator}
+                                     deleteQuestion={this.deleteQuestion}
                                      howManyQs={this.state.questions.length}/>;
    
    let creator = <CreateQAPanel addQ={this.addQuestion}
@@ -78,6 +80,14 @@ class App extends React.Component {
   handleChange(event) {
     this.setState({[event.target.name]:event.target.value});
   }
+  
+  deleteQuestion() {
+    if(this.state.questions.length > 1) {
+      let tempQs = this.state.questions;
+      tempQs.splice(this.state.currentQuestionIndex,1);
+      this.setState({questions:tempQs, currentQuestionIndex:0});
+    }
+  }
 }
 
 class QandAPanel extends React.Component {
@@ -107,6 +117,7 @@ class ControlPanel extends React.Component {
             <button onClick={this.props.prevQuestion}>Back</button>
             <button onClick={this.props.toggleAnswer}>{this.props.showAnswer ? 'Hide Answer' : 'Show Answer'}</button>
             <button onClick={this.props.toggleCreator}>{this.props.showCreator ? 'Hide Question Creator' : 'Show Question Creator'}</button>
+            <button onClick={this.props.deleteQuestion}>Remove Question</button>
             <p>Question {this.props.currentQuestionIndex + 1} of {this.props.howManyQs}</p>
            </div>;
   }

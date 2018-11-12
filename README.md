@@ -155,3 +155,14 @@ addQuestion(event) {
   event.preventDefault();
 }
 ```
+
+Delete Question Method:
+```jsx
+deleteQuestion() {
+  if(this.state.questions.length > 1) {
+    let tempQs = this.state.questions;
+    tempQs.splice(this.state.currentQuestionIndex,1);
+    this.setState({questions:tempQs, currentQuestionIndex:0});
+  }
+}
+```
