@@ -18,7 +18,7 @@ Inside the webpack-dev-server folder there is a package.json file that says one 
 
 ## Question 3
 ## (a)
-```javascript
+```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -40,7 +40,7 @@ ReactDOM.render(element, document.getElementById('root'));
 
 ## Question 4
 ## (a)
-```javascript
+```jsx
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -62,7 +62,7 @@ class App extends React.Component {
 ```
 
 ## (b)
-```javascript
+```jsx
 class QandAPanel extends React.Component {
   render() {
     if(this.props.showAnswer === false) {
@@ -87,7 +87,7 @@ class QandAPanel extends React.Component {
 ## Question 5
 ## (a)
 Increment:  
-```javascript
+```jsx
 nextQuestion() {
   let inc = (this.state.currentQuestionIndex + 1) % this.state.questions.length;
   this.setState({currentQuestionIndex:inc});
@@ -95,7 +95,7 @@ nextQuestion() {
 ```
 
 Decrement:  
-```javascript
+```jsx
 prevQuestion() {
   let dec = this.state.currentQuestionIndex - 1;
   if(dec === -1) {dec = this.state.questions.length - 1;}
@@ -104,7 +104,7 @@ prevQuestion() {
 ```
 
 Toggle Answer:  
-```javascript
+```jsx
 toggleAnswer() {
   let show = !this.state.showAnswer;
   this.setState({showAnswer:show});
@@ -112,7 +112,7 @@ toggleAnswer() {
 ```
 
 ## (b)
-```javascript
+```jsx
 class ControlPanel extends React.Component {
   render() {
     return <div>
