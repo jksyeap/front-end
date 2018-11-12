@@ -83,3 +83,44 @@ class QandAPanel extends React.Component {
   }
 }
 ```
+
+## Question 5
+## (a)
+Increment:  
+```javascript
+nextQuestion() {
+  let inc = (this.state.currentQuestionIndex + 1) % this.state.questions.length;
+  this.setState({currentQuestionIndex:inc});
+}
+```
+
+Decrement:  
+```javascript
+prevQuestion() {
+  let dec = this.state.currentQuestionIndex - 1;
+  if(dec === -1) {dec = this.state.questions.length - 1;}
+  this.setState({currentQuestionIndex:dec});
+}
+```
+
+Toggle Answer:  
+```javascript
+toggleAnswer() {
+  let show = !this.state.showAnswer;
+  this.setState({showAnswer:show});
+}
+```
+
+## (b)
+```javascript
+class ControlPanel extends React.Component {
+  render() {
+    return <div>
+            <button onClick={this.props.nextQuestion}>Forward</button>
+            <button onClick={this.props.prevQuestion}>Back</button>
+            <button onClick={this.props.toggleAnswer}>{this.props.showAnswer ? 'Hide Answer' : 'Show Answer'}</button>
+            <p>Question {this.props.currentQuestionIndex + 1} of {this.props.howManyQs}</p>
+           </div>;
+  }
+}
+```
