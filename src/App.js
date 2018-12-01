@@ -39,15 +39,15 @@ class App extends React.Component {
                                      deleteQuestion={this.deleteQuestion}
                                      howManyQs={this.state.questions.length}/>;
    
-   let creator = <CreateQAPanel addQ={this.addQuestion}
-                                handleChange={this.handleChange}
-                                newQ={this.state.newQ}
-                                newA={this.state.newA}/>;
+    let creator = <CreateQAPanel addQ={this.addQuestion}
+                                 handleChange={this.handleChange}
+                                 newQ={this.state.newQ}
+                                 newA={this.state.newA}/>;
    
-   if(this.state.showCreator === false)
-     {return <div>{controlPanel}{panel}</div>;} 
-   else
-     {return <div>{controlPanel}{panel}{creator}</div>;}
+    if(this.state.showCreator === false)
+      {return <div>{controlPanel}{panel}</div>;} 
+    else
+      {return <div>{controlPanel}{panel}{creator}</div>;}
   }
   
   nextQuestion() {
