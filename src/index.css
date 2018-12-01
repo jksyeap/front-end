@@ -1,7 +1,6 @@
 body {
-  border:15px solid Chartreuse
-}
-
-form input,label,textarea {
-    display:block;
+  margin: 25px 25px 25px 25px;
+  border:3px solid lightgray;
+  border-radius: 8px;
+  padding: 25px 25px 25px 25px;
 }
