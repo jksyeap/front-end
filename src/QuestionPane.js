@@ -1,5 +1,6 @@
 import React from 'react';
 import Tab from 'react-bootstrap/lib/Tab';
+import Tabs from 'react-bootstrap/lib/Tabs';
 import commonmark from 'commonmark';
 // eslint-disable-next-line
 import Prism from 'prismjs';
@@ -14,7 +15,12 @@ class QuestionPane extends React.Component {
       let parsed = reader.parse(element["instructions"]);
       let result = writer.render(parsed);
       return <Tab.Pane eventKey={"#"+element["task-name"]} key={element["task-name"]}>
-               <div dangerouslySetInnerHTML={{__html:result}}></div>
+               <Tabs defaultActiveKey="rendered">
+                 <Tab eventKey="rendered" title="Rendered"><div dangerouslySetInnerHTML={{__html:result}}></div></Tab>
+                 <Tab eventKey="raw" title="Original Markdown">
+                   <textarea className="raw" value={element["instructions"]} readonly/>
+                 </Tab>
+               </Tabs>
              </Tab.Pane>;
     });
     return <Tab.Content>{items}</Tab.Content>;
