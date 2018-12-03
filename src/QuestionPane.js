@@ -17,8 +17,8 @@ class QuestionPane extends React.Component {
       return <Tab.Pane eventKey={"#"+element["task-name"]} key={element["task-name"]}>
                <Tabs defaultActiveKey="rendered">
                  <Tab eventKey="rendered" title="Rendered"><div dangerouslySetInnerHTML={{__html:result}}></div></Tab>
-                 <Tab eventKey="raw" title="Original Markdown">
-                   <textarea className="raw" value={element["instructions"]} readonly/>
+                 <Tab eventKey="raw" title="Markdown">
+                   <textarea className="raw" value={element["instructions"]} readOnly/>
                  </Tab>
                </Tabs>
              </Tab.Pane>;

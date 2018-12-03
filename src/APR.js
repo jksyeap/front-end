@@ -83,10 +83,12 @@ class APR extends React.Component {
     let originalTask = this.state.tasklist.find(function(element) {
       return element["task-name"] === currentTaskName;
     });
-    this.setState({currentInstruction:originalTask.instructions})
+    this.setState({currentInstruction:originalTask.instructions});
   }
   
   toggleEditor() {
+    if(this.state.tasklist.length < 1 || this.state.currentTask === "") return;
+    this.cancelChanges();
     let show = !this.state.showEditor;
     this.setState({showEditor:show});
   }
