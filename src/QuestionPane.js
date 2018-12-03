@@ -13,7 +13,7 @@ class QuestionPane extends React.Component {
     let items = instructions.map(function(element) {
       let parsed = reader.parse(element["instructions"]);
       let result = writer.render(parsed);
-      return <Tab.Pane eventKey={"#"+element["task-name"]} key={"#"+element["task-name"]}>
+      return <Tab.Pane eventKey={"#"+element["task-name"]} key={element["task-name"]}>
                <div dangerouslySetInnerHTML={{__html:result}}></div>
              </Tab.Pane>;
     });
