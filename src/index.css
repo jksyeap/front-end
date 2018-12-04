@@ -11,6 +11,6 @@ body {
 }
 
 .editor {
-  max-width:90vw;
-  max-height:90vh;
+  min-width:90vw;
+  min-height:90vh;
 }

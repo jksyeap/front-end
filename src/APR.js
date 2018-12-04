@@ -7,7 +7,7 @@ import TaskCreator from './TaskCreator';
 import Tab from 'react-bootstrap/lib/Tab';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-const blankTask = {"task-name":"Task Name Here","due":"Due Date Here","status":"open","instructions":"Instuctions Here"};
+const blankTask = {"task-name":"","due":"","status":"","instructions":""};
 
 class APR extends React.Component {
   constructor(props) {
