@@ -3,11 +3,10 @@ import tlist from './tasks1.json';
 import Tasks from './TaskList';
 import Instructions from './QuestionPane';
 import TaskEditor from './TaskEditor';
-import TaskCreator from './TaskCreator';
 import Tab from 'react-bootstrap/lib/Tab';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-const blankTask = {"task-name":"","due":"","status":"","instructions":""};
+const blankTask = {"task-name":"","due":"","status":"open","instructions":""};
 
 class APR extends React.Component {
   constructor(props) {
@@ -40,13 +39,19 @@ class APR extends React.Component {
                              showEditor={this.state.showEditor}
                              hideEditor={this.toggleEditor}
                              saveChanges={this.saveChanges}
-                             cancelChanges={this.cancelChanges}/>;
-    let creator = <TaskCreator showCreator={this.state.showCreator}
-                               newTask={Object.assign({},this.state.newTask)}
-                               createTask={this.createTask}
-                               cancelCreateTask={this.cancelCreateTask}
-                               handleCreatorChange={this.handleCreatorChange}
-                               hideCreator={this.toggleCreator}/>;
+                             cancelChanges={this.cancelChanges}
+                             title="Task Editor"
+                             action="Save Changes"
+                             editName={true}/>;
+    let creator = <TaskEditor showEditor={this.state.showCreator}
+                               currentTaskObj={Object.assign({},this.state.newTask)}
+                               saveChanges={this.createTask}
+                               cancelChanges={this.cancelCreateTask}
+                               handleChange={this.handleCreatorChange}
+                               hideEditor={this.toggleCreator}
+                               title="Task Creator"
+                               action="Create Task"
+                               editName={false}/>;
     
     return <Tab.Container onSelect={this.setCurrentTask}>
              <Row>

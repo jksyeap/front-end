@@ -8,7 +8,7 @@ class TaskEditor extends React.Component {
   render() {
     return <Modal show={this.props.showEditor} onHide={this.props.hideEditor} dialogClassName="editor">
              <Modal.Header closeButton>
-               <Modal.Title>Task Editor</Modal.Title>
+               <Modal.Title>{this.props.title}</Modal.Title>
              </Modal.Header>
              <Modal.Body>
                <Form>
@@ -16,7 +16,7 @@ class TaskEditor extends React.Component {
                  <Col>
                    <Form.Group>
                      <Form.Label>Task Name</Form.Label>
-                     <Form.Control readOnly as="input" value={this.props.currentTaskObj["task-name"]} onChange={this.props.handleChange} name="task-name"/>
+                     <Form.Control readOnly={this.props.editName} as="input" value={this.props.currentTaskObj["task-name"]} onChange={this.props.handleChange} name="task-name"/>
                    </Form.Group>
                  </Col>
                  <Col>
@@ -43,7 +43,7 @@ class TaskEditor extends React.Component {
              </Modal.Body>
              <Modal.Footer>
                <button onClick={this.props.cancelChanges}>Cancel</button>
-               <button onClick={this.props.saveChanges}>Save Changes</button>
+               <button onClick={this.props.saveChanges}>{this.props.action}</button>
              </Modal.Footer>
            </Modal>;
   }
