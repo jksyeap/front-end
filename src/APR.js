@@ -17,8 +17,8 @@ class APR extends React.Component {
                   currentInstruction:"",
                   showEditor:false,
                   showCreator:false,
-                  newTask:blankTask 
-    };
+                  newTask:blankTask,
+                  currentTaskObj:{}};
     
     this.setCurrentTask = this.setCurrentTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
@@ -35,7 +35,7 @@ class APR extends React.Component {
   render() {
     let list = <Tasks tasklist={this.state.tasklist}/>;
     let instructions = <Instructions tasklist={this.state.tasklist}/>;
-    let editor = <TaskEditor currentInstruction={this.state.currentInstruction}
+    let editor = <TaskEditor currentTaskObj={this.state.currentTaskObj}
                              handleChange={this.handleChange}
                              showEditor={this.state.showEditor}
                              hideEditor={this.toggleEditor}
@@ -66,7 +66,7 @@ class APR extends React.Component {
     let selectedTask = this.state.tasklist.find(function(element) {
       return element["task-name"] === taskName;
     });
-    this.setState({currentTask:taskName, currentInstruction:selectedTask["instructions"]});
+    this.setState({currentTask:taskName, currentInstruction:selectedTask["instructions"], currentTaskObj:selectedTask});
   }
   
   deleteTask() {
@@ -82,7 +82,12 @@ class APR extends React.Component {
   }
   
   handleChange(event) {
-    this.setState({[event.target.name]:event.target.value});
+    let name = event.target.name;
+    let val = event.target.value;
+    this.setState(function(previousState) {
+      previousState.currentTaskObj[name] = val;
+      return previousState;
+    });
   }
   
   handleCreatorChange(event) {
@@ -100,7 +105,7 @@ class APR extends React.Component {
     let updatedTaskIndex = this.state.tasklist.findIndex(function(element) {
       return element["task-name"] === currentTask;
     });
-    tasksCopy[updatedTaskIndex].instructions = this.state.currentInstruction;
+    tasksCopy[updatedTaskIndex] = Object.assign(tasksCopy[updatedTaskIndex],this.state.currentTaskObj);
     this.setState({tasklist:tasksCopy, currentInstruction:this.state.currentInstruction});
   }
   
@@ -109,7 +114,7 @@ class APR extends React.Component {
     let originalTask = this.state.tasklist.find(function(element) {
       return element["task-name"] === currentTaskName;
     });
-    this.setState({currentInstruction:originalTask.instructions});
+    this.setState({currentInstruction:originalTask.instructions, currentTaskObj:Object.assign({},originalTask)});
   }
   
   toggleEditor() {

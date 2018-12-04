@@ -28,7 +28,7 @@ class TaskCreator extends React.Component {
                  <Col>
                    <Form.Group>
                      <Form.Label>Status</Form.Label>
-                     <Form.Control as="select" onChange={this.props.handleCreatorChange} name="status">
+                     <Form.Control value={this.props.newTask.status} as="select" onChange={this.props.handleCreatorChange} name="status">
                        <option value="open">Open</option>
                        <option value="closed">Closed</option>
                      </Form.Control>
@@ -42,8 +42,8 @@ class TaskCreator extends React.Component {
                </Form>
              </Modal.Body>
              <Modal.Footer>
-               <button onClick={this.props.createTask}>Save Changes</button>
                <button onClick={this.props.cancelCreateTask}>Cancel</button>
+               <button onClick={this.props.createTask}>Create Task</button>
              </Modal.Footer>
            </Modal>;
   }
