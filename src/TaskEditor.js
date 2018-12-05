@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Form from 'react-bootstrap/lib/Form';
+import Button from 'react-bootstrap/lib/Button';
 
 class TaskEditor extends React.Component {
   render() {
@@ -42,8 +43,8 @@ class TaskEditor extends React.Component {
                </Form>
              </Modal.Body>
              <Modal.Footer>
-               <button onClick={this.props.cancelChanges}>Cancel</button>
-               <button onClick={this.props.saveChanges}>{this.props.action}</button>
+               <Button variant="primary" onClick={this.props.cancelChanges}>Cancel</Button>
+               <Button variant="primary" onClick={this.props.saveChanges}>{this.props.action}</Button>
              </Modal.Footer>
            </Modal>;
   }

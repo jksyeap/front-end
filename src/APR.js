@@ -6,6 +6,8 @@ import TaskEditor from './TaskEditor';
 import Tab from 'react-bootstrap/lib/Tab';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 const blankTask = {"task-name":"","due":"","status":"open","instructions":""};
 
 class APR extends React.Component {
@@ -54,13 +56,15 @@ class APR extends React.Component {
                                editName={false}/>;
     
     return <Tab.Container onSelect={this.setCurrentTask}>
+             <ButtonGroup className="menuBar">
+               <Button variant="primary" onClick={this.toggleCreator}>Create New Task</Button>
+               <Button variant="primary" onClick={this.toggleEditor}>Edit Selected Task</Button>
+               <Button variant="primary" onClick={this.deleteTask}>Delete Selected Task</Button>
+             </ButtonGroup>
              <Row>
                <Col sm="auto">{list}</Col>
                <Col>{instructions}</Col>
              </Row>
-             <button onClick={this.deleteTask}>Delete Selected Task</button>
-             <button onClick={this.toggleEditor}>Edit Selected Task</button>
-             <button onClick={this.toggleCreator}>Create New Task</button>
              {editor}
              {creator}
            </Tab.Container>;
@@ -139,8 +143,9 @@ class APR extends React.Component {
     if(this.state.newTask["task-name"] === "" || this.state.newTask["due"] === "") 
       return;
     let tasksCopy = this.state.tasklist;
+    let temp = Object.assign({},blankTask);
     tasksCopy.push(this.state.newTask);
-    this.setState({tasklist:tasksCopy, newTask:blankTask});
+    this.setState({tasklist:tasksCopy, newTask:temp});
   }
   
   cancelCreateTask() {
