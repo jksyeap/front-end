@@ -1,5 +1,4 @@
 import React from 'react';
-//import tlist from './tasks1.json';
 import Tasks from './TaskList';
 import Instructions from './QuestionPane';
 import TaskEditor from './TaskEditor';
@@ -123,13 +122,20 @@ class APR extends React.Component {
   }
   
   saveChanges() {
-    let tasksCopy = this.state.tasklist;
-    let currentTask = this.state.currentTask;
-    let updatedTaskIndex = this.state.tasklist.findIndex(function(element) {
-      return element["task-name"] === currentTask;
+    let self = this;
+    let updatedTask = Object.assign({},this.state.currentTaskObj);
+    delete updatedTask['_id'];
+    fetch("/tasks/"+self.state.currentTask,{method:'PUT', headers:{"Content-Type":"application/json"}, body:JSON.stringify(updatedTask)})
+    .then(function(response) {
+      if(response.status === 200)
+        return fetch("/tasks",{method:'GET'});
+      else
+        console.log("Failed to update task");
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      self.setState({tasklist:data.tasks, currentInstruction:self.state.currentInstruction});
     });
-    tasksCopy[updatedTaskIndex] = Object.assign(tasksCopy[updatedTaskIndex],this.state.currentTaskObj);
-    this.setState({tasklist:tasksCopy, currentInstruction:this.state.currentInstruction});
   }
   
   cancelChanges() {
