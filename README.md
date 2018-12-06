@@ -56,9 +56,12 @@ class QuestionPane extends React.Component {
 ## (c)
 There is a top level component called APR.js that holds the state and is a tab container. Under that component there is  
 a component called TaskList.js that lists the tasks in a listgroup, each listgroup item is a clickable tab button and 
-brings up the task instructions in a corresponding tab pane. The tab panes are defined in the QuestionPane.js component.    
+brings up the task instructions in a corresponding tab pane. The tab panes are defined in the QuestionPane.js component. 
+Inside the tab pane from QuestionPane.js is another "Tabs" element in which one tab shows the rendered instructions, and  
+the other tab shows raw markdown.
   
-![Image](1c.png)
+![Image](1c1.png)  
+![Image](1c2.png)
 
 ## (d)
 ![Image](1d.png)
@@ -79,3 +82,11 @@ allows editing date, status, instructions, and name.
 
 ## Question 2
 ## (a)
+![Image](2a1.png)  
+![Image](2a2.png)  
+
+## (b)
+This line added to package.json:  
+```json
+"proxy": "http://0.0.0.0:8080"
+```

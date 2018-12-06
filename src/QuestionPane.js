@@ -3,8 +3,6 @@ import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import commonmark from 'commonmark';
 // eslint-disable-next-line
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-twilight.css';
 var reader = new commonmark.Parser();
 var writer = new commonmark.HtmlRenderer();
 

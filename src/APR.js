@@ -1,5 +1,5 @@
 import React from 'react';
-import tlist from './tasks1.json';
+//import tlist from './tasks1.json';
 import Tasks from './TaskList';
 import Instructions from './QuestionPane';
 import TaskEditor from './TaskEditor';
@@ -8,19 +8,21 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-twilight.css';
 const blankTask = {"task-name":"","due":"","status":"open","instructions":""};
 
 class APR extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tasklist:tlist,
+    this.state = {tasklist:[],
                   currentTask:"",
                   currentInstruction:"",
                   showEditor:false,
                   showCreator:false,
                   newTask:blankTask,
                   currentTaskObj:{}};
-    
+
     this.setCurrentTask = this.setCurrentTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -31,6 +33,15 @@ class APR extends React.Component {
     this.createTask = this.createTask.bind(this);
     this.cancelCreateTask = this.cancelCreateTask.bind(this);
     this.handleCreatorChange = this.handleCreatorChange.bind(this);
+  }
+  
+  componentDidMount() {
+    let self = this;
+    fetch('/tasks',{method:'GET'}).then(response => response.json())
+      .then(function(data) {
+        self.setState({tasklist:data.tasks});
+        Prism.highlightAll();
+    });
   }
   
   render() {
@@ -79,15 +90,18 @@ class APR extends React.Component {
   }
   
   deleteTask() {
-    let temp = this.state.tasklist;
-    let currentTask = this.state.currentTask;
-    temp = temp.filter(function(element) {
-      if(element["task-name"] === currentTask)
-        return false;
+    let self = this;
+    fetch("/tasks/"+self.state.currentTask,{method:'DELETE'}).then(response => response.json())
+    .then(function(data) {
+      if(data.success === true)
+        return fetch('/tasks',{method:'GET'})
       else
-        return true;
+        console.log("Failed to delete task");
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      self.setState({tasklist:data.tasks, currentTask:"", currentInstruction:""});
     });
-    this.setState({tasklist:temp, currentTask:"", currentInstruction:""});
   }
   
   handleChange(event) {
@@ -142,10 +156,19 @@ class APR extends React.Component {
   createTask() {
     if(this.state.newTask["task-name"] === "" || this.state.newTask["due"] === "") 
       return;
-    let tasksCopy = this.state.tasklist;
-    let temp = Object.assign({},blankTask);
-    tasksCopy.push(this.state.newTask);
-    this.setState({tasklist:tasksCopy, newTask:temp});
+    let self = this;
+    fetch('/tasks',{method:'POST',headers:{"Content-Type":"application/json"}, body:JSON.stringify(self.state.newTask)}).then(function(response) {
+      if(response.status === 201)
+        return fetch('/tasks',{method:'GET'});
+      else
+        console.log("Failed to create task");
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      let temp = Object.assign({},blankTask);
+      self.setState({tasklist:data.tasks, newTask:temp});
+      Prism.highlightAll();
+    });
   }
   
   cancelCreateTask() {
