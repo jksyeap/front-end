@@ -92,14 +92,19 @@ class APR extends React.Component {
     let self = this;
     fetch("/tasks/"+self.state.currentTask,{method:'DELETE'}).then(response => response.json())
     .then(function(data) {
-      if(data.success === true)
-        return fetch('/tasks',{method:'GET'})
+      if(data.success === true) {
+        let temp = self.state.tasklist;
+        let currentTask = self.state.currentTask;
+        temp = temp.filter(function(element) {
+          if(element["task-name"] === currentTask)
+            return false;
+          else
+            return true;
+        });
+        self.setState({tasklist:temp, currentTask:"", currentInstruction:""});
+      }
       else
         console.log("Failed to delete task");
-    })
-    .then(response => response.json())
-    .then(function(data) {
-      self.setState({tasklist:data.tasks, currentTask:"", currentInstruction:""});
     });
   }
   
@@ -127,14 +132,17 @@ class APR extends React.Component {
     delete updatedTask['_id'];
     fetch("/tasks/"+self.state.currentTask,{method:'PUT', headers:{"Content-Type":"application/json"}, body:JSON.stringify(updatedTask)})
     .then(function(response) {
-      if(response.status === 200)
-        return fetch("/tasks",{method:'GET'});
+      if(response.status === 200) {
+        let tasksCopy = self.state.tasklist;
+        let currentTask = self.state.currentTask;
+        let updatedTaskIndex = self.state.tasklist.findIndex(function(element) {
+          return element["task-name"] === currentTask;
+        });
+        tasksCopy[updatedTaskIndex] = Object.assign(tasksCopy[updatedTaskIndex],updatedTask);
+        self.setState({tasklist:tasksCopy, currentInstruction:self.state.currentInstruction});
+      }
       else
         console.log("Failed to update task");
-    })
-    .then(response => response.json())
-    .then(function(data) {
-      self.setState({tasklist:data.tasks, currentInstruction:self.state.currentInstruction});
     });
   }
   
@@ -163,17 +171,18 @@ class APR extends React.Component {
     if(this.state.newTask["task-name"] === "" || this.state.newTask["due"] === "") 
       return;
     let self = this;
-    fetch('/tasks',{method:'POST',headers:{"Content-Type":"application/json"}, body:JSON.stringify(self.state.newTask)}).then(function(response) {
-      if(response.status === 201)
-        return fetch('/tasks',{method:'GET'});
+    fetch('/tasks',{method:'POST',headers:{"Content-Type":"application/json"}, body:JSON.stringify(self.state.newTask)})
+    .then(function(response) {
+      if(response.status === 201) {
+        let tasksCopy = self.state.tasklist;
+        let temp = Object.assign({},blankTask);
+        tasksCopy.push(self.state.newTask);
+        self.setState({tasklist:tasksCopy, newTask:temp});
+        Prism.highlightAll();
+      }
       else
         console.log("Failed to create task");
-    })
-    .then(response => response.json())
-    .then(function(data) {
-      let temp = Object.assign({},blankTask);
-      self.setState({tasklist:data.tasks, newTask:temp});
-      Prism.highlightAll();
+      
     });
   }
   
