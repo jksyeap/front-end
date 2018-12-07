@@ -90,3 +90,95 @@ This line added to package.json:
 ```json
 "proxy": "http://0.0.0.0:8080"
 ```
+
+## (c)
+This is the initial fetch call that gets the list of tasks from the server when the app starts:  
+```jsx
+componentDidMount() {
+  let self = this;
+  fetch('/tasks',{method:'GET'}).then(response => response.json())
+    .then(function(data) {
+      self.setState({tasklist:data.tasks});
+      Prism.highlightAll();
+  });
+}
+```
+Initially the list of tasks in the state variable is empty, but after this call it gets populated with  
+tasks from the server. 
+
+## (d)
+This is the method that updates a task. When the corresponding button is clicked, it sends a fetch.put call  
+to the server at /tasks/:taskname with the updated task object in the body. If the server successfully updated 
+the task, then the local copy of the task in this.state.tasklist is updated as well.  
+```jsx
+saveChanges() {
+  let self = this;
+  let updatedTask = Object.assign({},this.state.currentTaskObj);
+  delete updatedTask['_id'];
+  fetch("/tasks/"+self.state.currentTask,{method:'PUT', headers:{"Content-Type":"application/json"}, body:JSON.stringify(updatedTask)})
+  .then(function(response) {
+    if(response.status === 200) {
+      let tasksCopy = self.state.tasklist;
+      let currentTask = self.state.currentTask;
+      let updatedTaskIndex = self.state.tasklist.findIndex(function(element) {
+        return element["task-name"] === currentTask;
+      });
+      tasksCopy[updatedTaskIndex] = Object.assign(tasksCopy[updatedTaskIndex],updatedTask);
+      self.setState({tasklist:tasksCopy, currentInstruction:self.state.currentInstruction});
+    }
+    else
+      console.log("Failed to update task");
+  });
+}
+```
+
+## (e)
+This is the method that creates a task. When the corresponding button is clicked, it sends a fetch.post call  
+to the server at /tasks with the newly created task object in the body. If the server successfully inserted 
+the new task, then the new task is added locally to this.state.tasklist as well. 
+```jsx
+createTask() {
+  if(this.state.newTask["task-name"] === "" || this.state.newTask["due"] === "") 
+    return;
+  let self = this;
+  fetch('/tasks',{method:'POST',headers:{"Content-Type":"application/json"}, body:JSON.stringify(self.state.newTask)})
+  .then(function(response) {
+    if(response.status === 201) {
+      let tasksCopy = self.state.tasklist;
+      let temp = Object.assign({},blankTask);
+      tasksCopy.push(self.state.newTask);
+      self.setState({tasklist:tasksCopy, newTask:temp});
+      Prism.highlightAll();
+    }
+    else
+      console.log("Failed to create task");
+    
+  });
+}
+```
+
+## (f)
+This is the method that deletes a task. When the corresponding button is clicked, it sends a fetch.delete call  
+to the server at /tasks/:taskname. If the server successfully deleted the task, then the local copy of the task 
+in this.state.tasklist is deleted as well.  
+```jsx
+deleteTask() {
+  let self = this;
+  fetch("/tasks/"+self.state.currentTask,{method:'DELETE'}).then(response => response.json())
+  .then(function(data) {
+    if(data.success === true) {
+      let temp = self.state.tasklist;
+      let currentTask = self.state.currentTask;
+      temp = temp.filter(function(element) {
+        if(element["task-name"] === currentTask)
+          return false;
+        else
+          return true;
+      });
+      self.setState({tasklist:temp, currentTask:"", currentInstruction:""});
+    }
+    else
+      console.log("Failed to delete task");
+  });
+}
+```
